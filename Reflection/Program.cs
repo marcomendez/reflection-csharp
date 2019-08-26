@@ -14,14 +14,15 @@ namespace Reflection
         static void Main(string[] args)
         {
 
-            //ExecuteMethod("Button", "Click");
-            //ExecuteMethod("Link", "Click");
+            ExecuteMethod("Button", "Click");
+            ExecuteMethod("Link", "Click");
 
             object[] parameters = new object[] { "Hello" };
-            //ExecuteMethod("Button", "Message", parameters);
+            ExecuteMethod("Button", "Message", parameters);
 
             parameters = new object[] { "Hello", "world" };
-            xx("Button");
+            ExecuteMethod("Button", "Message2", parameters);
+            //Execute("Button");
 
             Console.ReadLine();
         }
@@ -42,7 +43,7 @@ namespace Reflection
         }
 
 
-        private static void xx(string type)
+        private static void Execute(string type)
         {
             // Get Assemble path
             var assembly = Assembly.LoadFrom(AppDomain.CurrentDomain.BaseDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + ".exe");
