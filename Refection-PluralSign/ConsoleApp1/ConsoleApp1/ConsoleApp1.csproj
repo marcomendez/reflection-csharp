@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F26C0A04-486B-4044-9BCB-8F881F515219}</ProjectGuid>
+    <ProjectGuid>{EBD80D53-948C-4592-A0AE-86FD7AB226C9}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Reflection</RootNamespace>
-    <AssemblyName>Reflection</AssemblyName>
+    <RootNamespace>ConsoleApp1</RootNamespace>
+    <AssemblyName>ConsoleApp1</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -43,17 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controles\Button.cs" />
-    <Compile Include="Controles\Clickeable.cs" />
-    <Compile Include="Controles\ControlAliasAttribute.cs" />
-    <Compile Include="Controles\Link.cs" />
-    <Compile Include="Controles\TextBox.cs" />
+    <Compile Include="models\Button.cs" />
+    <Compile Include="models\IButton.cs" />
+    <Compile Include="models\TextBox.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="View\Iview.cs" />
-    <Compile Include="View\ViewAliasAttribute.cs" />
-    <Compile Include="View\View01.cs" />
-    <Compile Include="View\ViewBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

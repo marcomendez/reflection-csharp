@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Reflection.Controles
 {
-   public class Link
+   public class TextBox
     {
-        public void Click()
+        public void SentText(string message)
         {
-            Console.WriteLine("Click from Link");
+            Console.WriteLine("menssage from text box" +  message);
         }
     }
 }

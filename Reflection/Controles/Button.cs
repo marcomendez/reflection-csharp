@@ -1,17 +1,9 @@
-﻿using Reflection.Controles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
-namespace Reflection
+namespace Reflection.Controles
 {
-  public class Button: Clickeable
+    public class Button
     {
-
-      
         public void Click()
         {
             Console.WriteLine("click from button");

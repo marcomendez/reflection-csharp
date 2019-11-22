@@ -1,11 +1,8 @@
 ﻿using Reflection.Controles;
+using Reflection.View;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reflection
 {
@@ -13,16 +10,28 @@ namespace Reflection
     {
         static void Main(string[] args)
         {
+            ///*************** Execute Controls ************
+            object[] parameters = new object[] { "Hello" };
+            ExecuteMethod("TextBox", "SentText", parameters);
 
             ExecuteMethod("Button", "Click");
             ExecuteMethod("Link", "Click");
 
-            object[] parameters = new object[] { "Hello" };
             ExecuteMethod("Button", "Message", parameters);
 
             parameters = new object[] { "Hello", "world" };
             ExecuteMethod("Button", "Message2", parameters);
-            //Execute("Button");
+           // Execute("Button");
+
+
+
+
+            ///*/***************  Execute controls from views **************
+            ExecuteClassAndMethodWithAlias("Login", "UserName", "SentText", parameters);
+
+
+
+
 
             Console.ReadLine();
         }
@@ -33,7 +42,7 @@ namespace Reflection
             var assembly = Assembly.LoadFrom(AppDomain.CurrentDomain.BaseDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + ".exe");
 
             // Get type control
-            Type typeControl = assembly.GetTypes().Where(t => t.Name.Equals(type)).First(); 
+            Type typeControl = assembly.GetType($"Reflection.Controles.{type}"); 
 
             // Instance the control
             dynamic control = Activator.CreateInstance(typeControl);
@@ -41,6 +50,43 @@ namespace Reflection
             // Execute method
             control.GetType().GetMethod(methodName).Invoke(control, parameters);
         }
+
+
+        private static void ExecuteClassAndMethodWithAlias(string view, string control, string method, object[] parameters = null)
+        {
+            // Get Assemble path
+            var assembly = Assembly.LoadFrom(AppDomain.CurrentDomain.BaseDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + ".exe");
+
+            Type[] types = assembly.GetTypes();
+
+
+            foreach(Type type in types)
+            {
+                ViewAlias attribute = (ViewAlias) type.GetCustomAttribute(typeof(ViewAlias));
+
+                if(attribute?.Name == view)
+                {
+                    // Instance the control
+                    Iview viewInstance = Activator.CreateInstance(type) as Iview;
+
+
+                    //Get the control (class property)
+                    var controlInstance = viewInstance.GetType().GetProperty(control);
+
+
+                    dynamic controlOK = Activator.CreateInstance();
+
+
+                    controlOK.GetType().GetMethod(method).Invoke(controlInstance, parameters);
+
+
+                }
+            }
+
+     
+
+        }
+
 
 
         private static void Execute(string type)
