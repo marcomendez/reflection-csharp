@@ -2,6 +2,7 @@
 using Reflection.View;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace Reflection
@@ -11,32 +12,43 @@ namespace Reflection
         static void Main(string[] args)
         {
             ///*************** Execute Controls ************
-            object[] parameters = new object[] { "Hello" };
-            ExecuteMethod("TextBox", "SentText", parameters);
+            object[] parameters = new object[] { " Hello" };
+            ExecuteControl("TextBox", "SentText", parameters);
 
-            ExecuteMethod("Button", "Click");
-            ExecuteMethod("Link", "Click");
+            ExecuteControl("Button", "Click");
+            ExecuteControl("Link", "Click");
 
-            ExecuteMethod("Button", "Message", parameters);
+            ExecuteControl("Button", "Message", parameters);
 
-            parameters = new object[] { "Hello", "world" };
-            ExecuteMethod("Button", "Message2", parameters);
-           // Execute("Button");
+           
+
+
 
 
 
 
             ///*/***************  Execute controls from views **************
-            ExecuteClassAndMethodWithAlias("Login", "UserName", "SentText", parameters);
+            ExecuteClassAndMethodWithAlias("Login", "User Name", "SentText", parameters);
+
+            ExecuteClassAndMethodWithAlias("Login", "User Name", "Click");
+
+            var result = (int) ExecuteClassAndMethodWithAlias("Login", "Get Int", "GetInt");
+            Console.WriteLine(result);
 
 
-
-
-
+            parameters = new object[] { "Hello", "world" };
+            ExecuteClassAndMethodWithAlias("Login", "Save", "Message2", parameters);
             Console.ReadLine();
+
+
+
+
+            //parameters = new object[] { "Hello", "world" };
+            //ExecuteMethod("Button", "Message2", parameters);
+            // Execute("Button");
         }
 
-        private static void ExecuteMethod(string type, string methodName, object[] parameters = null)
+        private static void ExecuteControl(string type, string methodName, object[] parameters = null)
         {
             // Get Assemble path
             var assembly = Assembly.LoadFrom(AppDomain.CurrentDomain.BaseDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + ".exe");
@@ -52,42 +64,44 @@ namespace Reflection
         }
 
 
-        private static void ExecuteClassAndMethodWithAlias(string view, string control, string method, object[] parameters = null)
+        private static object ExecuteClassAndMethodWithAlias(string viewName, string controlName, string method, object[] parameters = null)
         {
             // Get Assemble path
             var assembly = Assembly.LoadFrom(AppDomain.CurrentDomain.BaseDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + ".exe");
 
             Type[] types = assembly.GetTypes();
 
-
             foreach(Type type in types)
             {
-                ViewAlias attribute = (ViewAlias) type.GetCustomAttribute(typeof(ViewAlias));
+                ViewAlias viewAlias = (ViewAlias) type.GetCustomAttribute(typeof(ViewAlias));
 
-                if(attribute?.Name == view)
+                if(viewAlias?.Name == viewName)
                 {
                     // Instance the control
                     Iview viewInstance = Activator.CreateInstance(type) as Iview;
 
-
-                    //Get the control (class property)
-                    var controlInstance = viewInstance.GetType().GetProperty(control);
-
-
-                    dynamic controlOK = Activator.CreateInstance();
-
-
-                    controlOK.GetType().GetMethod(method).Invoke(controlInstance, parameters);
-
-
+                    var properties = viewInstance.GetType().GetProperties();
+                    return ExecuteProperty(controlName, method, parameters, viewInstance, properties);
                 }
             }
 
-     
-
+            return null;
         }
 
-
+        private static object ExecuteProperty(string controlName, string method, object[] parameters, Iview viewInstance, PropertyInfo[] properties)
+        {
+            foreach(var property in properties)
+            {
+                ControlAlias controlAlias = (ControlAlias) property.GetCustomAttribute(typeof(ControlAlias));
+                if (controlAlias?.Name == controlName)
+                {
+                    Type propertyasa = property.PropertyType;
+                    dynamic controlOK = Activator.CreateInstance(propertyasa);
+                    return controlOK.GetType().GetMethod(method).Invoke(controlOK, parameters);
+                }
+            }
+            return null;
+        }
 
         private static void Execute(string type)
         {

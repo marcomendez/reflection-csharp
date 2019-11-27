@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Reflection.Controles
 {
-   public class Link
+   public class Link : ControlBase
     {
         public void Click()
         {

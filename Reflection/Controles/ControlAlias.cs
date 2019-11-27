@@ -16,9 +16,13 @@ namespace Reflection.Controles
             _alias = alias;
         }
 
-        public string Name()
+        public string Name
         {
-            return _alias;
+            get
+            {
+                return _alias;
+            }
+            
         }
 
         public override string ToString()

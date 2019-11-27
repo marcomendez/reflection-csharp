@@ -45,13 +45,14 @@
   <ItemGroup>
     <Compile Include="Controles\Button.cs" />
     <Compile Include="Controles\Clickeable.cs" />
-    <Compile Include="Controles\ControlAliasAttribute.cs" />
+    <Compile Include="Controles\ControlAlias.cs" />
+    <Compile Include="Controles\ControlBase.cs" />
     <Compile Include="Controles\Link.cs" />
     <Compile Include="Controles\TextBox.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\Iview.cs" />
-    <Compile Include="View\ViewAliasAttribute.cs" />
+    <Compile Include="View\ViewAlias.cs" />
     <Compile Include="View\View01.cs" />
     <Compile Include="View\ViewBase.cs" />
   </ItemGroup>

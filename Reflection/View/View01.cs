@@ -11,6 +11,10 @@ namespace Reflection.View
         [ControlAlias("Save")]
         public Button Save => new Button();
 
-        
+
+        [ControlAlias("Get Int")]
+        public TextBox GetInt => new TextBox();
+
+
     }
 }
